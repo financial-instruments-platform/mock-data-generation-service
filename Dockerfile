@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17-slim
-COPY --from=build target/MockDataService-1.0-SNAPSHOT.jar MockDataService.jar
+COPY --from=build target/MockDataServiceApplication-1.0-SNAPSHOT.jar MockDataServiceApplication.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "MockDataService.jar"]
+ENTRYPOINT ["java", "-jar", "MockDataServiceApplication.jar"]
