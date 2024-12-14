@@ -1,19 +1,8 @@
-FROM openjdk:22-slim
-
-WORKDIR /app
-
-COPY pom.xml .
-
-COPY src ./src
-
-COPY target ./target
-
-RUN apt-get update && \
-    apt-get install -y maven && \
-    apt-get clean
-
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
 RUN mvn clean package -DskipTests
 
+FROM openjdk:17-slim
+COPY --from=build target/MockDataService-1.0-SNAPSHOT.jar MockDataService.jar
 EXPOSE 8080
-
-CMD ["java", "-jar", "target/MockDataService-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "MockDataService.jar"]
